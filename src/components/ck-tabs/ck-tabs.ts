@@ -246,7 +246,7 @@ export class CKTabs extends HTMLElement {
    */
   private render(): void {
     const tabs = Array.from(this.querySelectorAll('ck-tab')) as CKTab[];
-    let activeIndex = tabs.findIndex(tab => tab.active);
+    let activeIndex = tabs.findIndex((tab) => tab.active);
     if (activeIndex === -1) activeIndex = 0;
     this.currentActiveIndex = activeIndex;
 
@@ -256,10 +256,12 @@ export class CKTabs extends HTMLElement {
     });
 
     const styleElement = this.createStyles();
-    
+
     this.shadow.innerHTML = `
       ${styleElement}
-      ${tabs.map((tab, index) => `
+      ${tabs
+        .map(
+          (tab, index) => `
         <button 
           class="tab-heading ${index === activeIndex ? 'active' : ''}" 
           data-index="${index}"
@@ -282,7 +284,9 @@ export class CKTabs extends HTMLElement {
             <slot name="tab-${index}"></slot>
           </div>
         </div>
-      `).join('')}
+      `
+        )
+        .join('')}
     `;
 
     // Assign slot names to tabs
@@ -310,7 +314,7 @@ export class CKTabs extends HTMLElement {
       if (target.classList.contains('tab-heading')) {
         const index = parseInt(target.dataset.index || '0');
         const tabs = this.shadow.querySelectorAll('.tab-heading');
-        
+
         switch (keyEvent.key) {
           case 'ArrowLeft':
           case 'ArrowUp': {
@@ -356,15 +360,15 @@ export class CKTabs extends HTMLElement {
     const previousActiveIndex = this.currentActiveIndex;
 
     // Remove active state from all elements
-    headings.forEach(h => {
+    headings.forEach((h) => {
       h.classList.remove('active');
       h.setAttribute('aria-selected', 'false');
     });
-    panels.forEach(p => {
+    panels.forEach((p) => {
       p.classList.remove('active');
       p.setAttribute('aria-hidden', 'true');
     });
-    tabs.forEach(t => t.removeAttribute('active'));
+    tabs.forEach((t) => t.removeAttribute('active'));
 
     // Set active state for selected elements
     if (headings[index]) {
@@ -382,26 +386,30 @@ export class CKTabs extends HTMLElement {
     this.currentActiveIndex = index;
 
     // Dispatch custom events
-    this.dispatchEvent(new CustomEvent('tab-change', {
-      detail: {
-        activeIndex: index,
-        activeTab: tabs[index],
-        previousActiveIndex,
-        previousActiveTab: tabs[previousActiveIndex]
-      },
-      bubbles: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('tab-change', {
+        detail: {
+          activeIndex: index,
+          activeTab: tabs[index],
+          previousActiveIndex,
+          previousActiveTab: tabs[previousActiveIndex],
+        },
+        bubbles: true,
+      })
+    );
 
-    this.dispatchEvent(new CustomEvent('tab-selected', {
-      detail: {
-        selectedIndex: index,
-        selectedTab: tabs[index],
-        tabLabel: tabs[index] ? tabs[index].label : '',
-        tabElement: this,
-        timestamp: Date.now()
-      },
-      bubbles: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('tab-selected', {
+        detail: {
+          selectedIndex: index,
+          selectedTab: tabs[index],
+          tabLabel: tabs[index] ? tabs[index].label : '',
+          tabElement: this,
+          timestamp: Date.now(),
+        },
+        bubbles: true,
+      })
+    );
   }
 
   /**
@@ -447,16 +455,16 @@ export class CKTabs extends HTMLElement {
     const tab = document.createElement('ck-tab') as CKTab;
     tab.label = label;
     tab.innerHTML = content;
-    
+
     if (active) {
       // Deactivate all existing tabs first
       const existingTabs = Array.from(this.querySelectorAll('ck-tab')) as CKTab[];
-      existingTabs.forEach(existingTab => {
+      existingTabs.forEach((existingTab) => {
         existingTab.active = false;
       });
       tab.active = true;
     }
-    
+
     this.appendChild(tab);
     this.render();
     return tab;
