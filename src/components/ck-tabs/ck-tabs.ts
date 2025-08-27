@@ -313,29 +313,33 @@ export class CKTabs extends HTMLElement {
         
         switch (keyEvent.key) {
           case 'ArrowLeft':
-          case 'ArrowUp':
+          case 'ArrowUp': {
             keyEvent.preventDefault();
             const prevIndex = index > 0 ? index - 1 : tabs.length - 1;
             (tabs[prevIndex] as HTMLElement).focus();
             this.setActiveTab(prevIndex);
             break;
+          }
           case 'ArrowRight':
-          case 'ArrowDown':
+          case 'ArrowDown': {
             keyEvent.preventDefault();
             const nextIndex = index < tabs.length - 1 ? index + 1 : 0;
             (tabs[nextIndex] as HTMLElement).focus();
             this.setActiveTab(nextIndex);
             break;
-          case 'Home':
+          }
+          case 'Home': {
             keyEvent.preventDefault();
             (tabs[0] as HTMLElement).focus();
             this.setActiveTab(0);
             break;
-          case 'End':
+          }
+          case 'End': {
             keyEvent.preventDefault();
             (tabs[tabs.length - 1] as HTMLElement).focus();
             this.setActiveTab(tabs.length - 1);
             break;
+          }
         }
       }
     });
