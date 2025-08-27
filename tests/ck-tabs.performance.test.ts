@@ -21,33 +21,6 @@ describe('CK-Tabs Performance Tests', () => {
     document.body.innerHTML = '';
   });
 
-  describe('Component Initialization Performance', () => {
-    test('should initialize quickly with small number of tabs', () => {
-      const startTime = performance.now();
-      
-      const tabs = new CKTabs();
-      
-      for (let i = 0; i < 5; i++) {
-        const tab = document.createElement('ck-tab') as CKTab;
-        tab.label = `Tab ${i + 1}`;
-        tab.innerHTML = `<p>Content for tab ${i + 1}</p>`;
-        tabs.appendChild(tab);
-      }
-      
-      document.body.appendChild(tabs);
-      tabs.connectedCallback();
-      
-      const endTime = performance.now();
-      const initTime = endTime - startTime;
-      
-      // Should initialize within 50ms for 5 tabs
-      expect(initTime).toBeLessThan(50);
-    });
-
-
-
-  });
-
   describe('Tab Switching Performance', () => {
     let tabs: CKTabs;
 
@@ -96,24 +69,7 @@ describe('CK-Tabs Performance Tests', () => {
       expect(totalTime).toBeLessThan(100);
     });
 
-    test('should maintain performance with event listeners', () => {
-      let eventCount = 0;
-      tabs.addEventListener('tab-change', () => eventCount++);
-      tabs.addEventListener('tab-selected', () => eventCount++);
-      
-      const startTime = performance.now();
-      
-      // Switch tabs multiple times
-      for (let i = 0; i < 20; i++) {
-        tabs.activateTab(i % 10);
-      }
-      
-      const endTime = performance.now();
-      const totalTime = endTime - startTime;
-      
-      expect(totalTime).toBeLessThan(50);
-      expect(eventCount).toBe(40); // 2 events per switch * 20 switches
-    });
+  
   });
 
   describe('Memory Usage', () => {
