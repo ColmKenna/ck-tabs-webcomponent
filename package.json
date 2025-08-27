@@ -21,7 +21,7 @@
     "prepublishOnly": "npm run build",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+  "test:coverage": "jest --coverage --config ./jest.config.cjs",
   "lint": "eslint src --ext .ts,.js",
   "lint:fix": "eslint src --ext .ts,.js --fix",
   "format": "prettier --write \"src/**/*.{ts,js}\"",

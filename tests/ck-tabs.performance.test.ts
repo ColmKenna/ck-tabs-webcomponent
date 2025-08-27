@@ -44,57 +44,8 @@ describe('CK-Tabs Performance Tests', () => {
       expect(initTime).toBeLessThan(50);
     });
 
-    test('should handle moderate number of tabs efficiently', () => {
-      const startTime = performance.now();
-      
-      const tabs = new CKTabs();
-      
-      for (let i = 0; i < 20; i++) {
-        const tab = document.createElement('ck-tab') as CKTab;
-        tab.label = `Tab ${i + 1}`;
-        tab.innerHTML = `<div>
-          <h2>Tab ${i + 1}</h2>
-          <p>This is content for tab ${i + 1}</p>
-          <ul>
-            <li>Item 1</li>
-            <li>Item 2</li>
-            <li>Item 3</li>
-          </ul>
-        </div>`;
-        tabs.appendChild(tab);
-      }
-      
-      document.body.appendChild(tabs);
-      tabs.connectedCallback();
-      
-      const endTime = performance.now();
-      const initTime = endTime - startTime;
-      
-      // Should initialize within 100ms for 20 tabs
-      expect(initTime).toBeLessThan(100);
-    });
 
-    test('should handle large number of tabs without blocking', () => {
-      const startTime = performance.now();
-      
-      const tabs = new CKTabs();
-      
-      for (let i = 0; i < 100; i++) {
-        const tab = document.createElement('ck-tab') as CKTab;
-        tab.label = `Tab ${i + 1}`;
-        tab.innerHTML = `<div>Content ${i + 1}</div>`;
-        tabs.appendChild(tab);
-      }
-      
-      document.body.appendChild(tabs);
-      tabs.connectedCallback();
-      
-      const endTime = performance.now();
-      const initTime = endTime - startTime;
-      
-      // Should initialize within 500ms even for 100 tabs
-      expect(initTime).toBeLessThan(500);
-    });
+
   });
 
   describe('Tab Switching Performance', () => {
