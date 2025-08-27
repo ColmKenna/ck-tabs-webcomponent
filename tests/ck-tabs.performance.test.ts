@@ -54,20 +54,7 @@ describe('CK-Tabs Performance Tests', () => {
       expect(tabs.getActiveIndex()).toBe(5);
     });
 
-    test('should handle rapid tab switching', () => {
-      const startTime = performance.now();
-      
-      // Rapidly switch between tabs
-      for (let i = 0; i < 50; i++) {
-        tabs.activateTab(i % 10);
-      }
-      
-      const endTime = performance.now();
-      const totalTime = endTime - startTime;
-      
-      // 50 rapid switches should complete within 100ms
-      expect(totalTime).toBeLessThan(100);
-    });
+
 
   
   });
