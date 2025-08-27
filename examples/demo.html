@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK-Tabs Demo - Interactive Examples</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            margin: -2rem -2rem 2rem -2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .demo-section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-section h2 {
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .demo-section p {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+
+        .theme-selector {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }
+
+        .theme-selector label {
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        .theme-selector select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .code-example {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-example pre {
+            margin: 0;
+            font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .api-demo {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .api-demo button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .api-demo button:hover {
+            background: #0056b3;
+        }
+
+        .event-log {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            height: 200px;
+            overflow-y: auto;
+            margin: 1rem 0;
+        }
+
+        /* Theme Variables */
+        :root {
+            --tab-bg: #ffffff;
+            --tab-border: #e0e0e0;
+            --tab-text: #333333;
+            --tab-hover-bg: #f5f5f5;
+            --primary-color: #007bff;
+            --primary-hover: #0056b3;
+            --text-light: #ffffff;
+            --tab-content-bg: #ffffff;
+            --tab-content-text: #333333;
+            --focus-color: #007bff;
+            --scrollbar-track: #f1f1f1;
+            --scrollbar-thumb: #c1c1c1;
+            --tab-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --heading-font-family: Georgia, serif;
+        }
+
+        /* Dark Theme */
+        .theme-dark {
+            --tab-bg: #2d3748;
+            --tab-border: #4a5568;
+            --tab-text: #e2e8f0;
+            --tab-hover-bg: #4a5568;
+            --primary-color: #63b3ed;
+            --primary-hover: #3182ce;
+            --tab-content-bg: #1a202c;
+            --tab-content-text: #e2e8f0;
+            --scrollbar-track: #2d3748;
+            --scrollbar-thumb: #4a5568;
+        }
+
+        /* Forest Theme */
+        .theme-forest {
+            --tab-bg: #f0f8f0;
+            --tab-border: #68d391;
+            --tab-text: #2f855a;
+            --tab-hover-bg: #e6fffa;
+            --primary-color: #38a169;
+            --primary-hover: #2f855a;
+            --tab-content-bg: #ffffff;
+            --tab-content-text: #2d3748;
+        }
+
+        /* Sunset Theme */
+        .theme-sunset {
+            --tab-bg: #fff5f5;
+            --tab-border: #feb2b2;
+            --tab-text: #c53030;
+            --tab-hover-bg: #fed7d7;
+            --primary-color: #e53e3e;
+            --primary-hover: #c53030;
+            --tab-content-bg: #ffffff;
+            --tab-content-text: #2d3748;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                margin: -1rem -1rem 1rem -1rem;
+                padding: 2rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .api-demo {
+                flex-direction: column;
+            }
+
+            .api-demo button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CK-Tabs Interactive Demo</h1>
+            <p>Experience the power of modern, accessible tab components</p>
+        </div>
+
+        <!-- Basic Example -->
+        <div class="demo-section">
+            <h2>🚀 Basic Example</h2>
+            <p>Simple tabs with minimal setup. Just define your tabs and content!</p>
+            
+            <ck-tabs id="basic-tabs">
+                <ck-tab label="Welcome" active>
+                    <h1>Welcome to CK-Tabs</h1>
+                    <p>This is a modern, accessible tabs component built with Web Components. It provides seamless content organization through labeled tabs with associated panels.</p>
+                    <ul>
+                        <li>✅ Accessibility first design</li>
+                        <li>✅ Keyboard navigation support</li>
+                        <li>✅ Mobile responsive</li>
+                        <li>✅ Easy theming</li>
+                    </ul>
+                </ck-tab>
+                <ck-tab label="Features">
+                    <h1>Key Features</h1>
+                    <p>CK-Tabs comes packed with features for modern web development:</p>
+                    <ul>
+                        <li><strong>WCAG 2.1 AA Compliance</strong> - Full accessibility support</li>
+                        <li><strong>Keyboard Navigation</strong> - Arrow keys, Home, End support</li>
+                        <li><strong>Theming System</strong> - CSS custom properties for styling</li>
+                        <li><strong>Performance</strong> - Constructable Stylesheets optimization</li>
+                        <li><strong>Security</strong> - XSS prevention built-in</li>
+                        <li><strong>Cross-browser</strong> - Modern browsers with fallbacks</li>
+                    </ul>
+                </ck-tab>
+                <ck-tab label="Getting Started">
+                    <h1>Quick Start</h1>
+                    <p>Get started with CK-Tabs in just a few steps:</p>
+                    <ol>
+                        <li><strong>Install:</strong> <code>npm install @colmkenna/ck-tabs</code></li>
+                        <li><strong>Import:</strong> <code>import '@colmkenna/ck-tabs';</code></li>
+                        <li><strong>Use:</strong> Add <code>&lt;ck-tabs&gt;</code> to your HTML</li>
+                    </ol>
+                    <p>That's it! The components are automatically registered and ready to use.</p>
+                </ck-tab>
+            </ck-tabs>
+
+            <div class="code-example">
+                <pre><code>&lt;ck-tabs&gt;
+  &lt;ck-tab label="Welcome" active&gt;
+    &lt;h1&gt;Welcome to CK-Tabs&lt;/h1&gt;
+    &lt;p&gt;Your content here...&lt;/p&gt;
+  &lt;/ck-tab&gt;
+  &lt;ck-tab label="Features"&gt;
+    &lt;h1&gt;Key Features&lt;/h1&gt;
+    &lt;p&gt;Feature descriptions...&lt;/p&gt;
+  &lt;/ck-tab&gt;
+&lt;/ck-tabs&gt;</code></pre>
+            </div>
+        </div>
+
+        <!-- Theme Demonstration -->
+        <div class="demo-section">
+            <h2>🎨 Theme Demonstration</h2>
+            <p>Experience different themes by selecting from the dropdown below. Themes change instantly using CSS custom properties.</p>
+            
+            <div class="theme-selector">
+                <label for="theme-select">Choose Theme:</label>
+                <select id="theme-select">
+                    <option value="">Light (Default)</option>
+                    <option value="theme-dark">Dark</option>
+                    <option value="theme-forest">Forest Green</option>
+                    <option value="theme-sunset">Warm Sunset</option>
+                </select>
+            </div>
+
+            <ck-tabs id="themed-tabs">
+                <ck-tab label="Light Theme" active>
+                    <h1>Light Theme</h1>
+                    <p>The default light theme provides a clean, professional appearance suitable for most applications.</p>
+                    <p>Features clean whites and subtle grays with blue accents for interactive elements.</p>
+                </ck-tab>
+                <ck-tab label="Dark Theme">
+                    <h1>Dark Theme</h1>
+                    <p>Perfect for applications used in low-light environments or for users who prefer dark interfaces.</p>
+                    <p>Uses dark backgrounds with light text and bright blue accents for visual hierarchy.</p>
+                </ck-tab>
+                <ck-tab label="Forest Theme">
+                    <h1>Forest Green Theme</h1>
+                    <p>A nature-inspired theme using greens and earth tones for a calming, organic feel.</p>
+                    <p>Great for environmental, health, or outdoor-focused applications.</p>
+                </ck-tab>
+                <ck-tab label="Sunset Theme">
+                    <h1>Warm Sunset Theme</h1>
+                    <p>Warm colors inspired by sunset hues create an energetic, welcoming atmosphere.</p>
+                    <p>Perfect for creative, lifestyle, or entertainment-focused applications.</p>
+                </ck-tab>
+            </ck-tabs>
+
+            <div class="code-example">
+                <pre><code>/* Dark Theme Example */
+:root {
+  --tab-bg: #2d3748;
+  --tab-border: #4a5568;
+  --tab-text: #e2e8f0;
+  --primary-color: #63b3ed;
+  --tab-content-bg: #1a202c;
+  --tab-content-text: #e2e8f0;
+}</code></pre>
+            </div>
+        </div>
+
+        <!-- API Demonstration -->
+        <div class="demo-section">
+            <h2>⚡ API Demonstration</h2>
+            <p>Interact with the tabs programmatically using the component's JavaScript API.</p>
+
+            <ck-tabs id="api-tabs">
+                <ck-tab label="Tab 1" active>
+                    <h1>Programmatic Tab 1</h1>
+                    <p>This tab was activated programmatically. You can control tab state using JavaScript methods.</p>
+                    <p>Current time: <span id="tab1-time"></span></p>
+                </ck-tab>
+                <ck-tab label="Tab 2">
+                    <h1>Dynamic Tab 2</h1>
+                    <p>This tab demonstrates dynamic content updates and API interaction.</p>
+                    <p>Click count: <span id="click-count">0</span></p>
+                </ck-tab>
+                <ck-tab label="Tab 3">
+                    <h1>Interactive Tab 3</h1>
+                    <p>This tab shows how to handle user interactions within tab content.</p>
+                    <button onclick="showAlert()">Click Me!</button>
+                </ck-tab>
+            </ck-tabs>
+
+            <div class="api-demo">
+                <button onclick="activateTab(0)">Activate Tab 1</button>
+                <button onclick="activateTab(1)">Activate Tab 2</button>
+                <button onclick="activateTab(2)">Activate Tab 3</button>
+                <button onclick="addNewTab()">Add New Tab</button>
+                <button onclick="removeLastTab()">Remove Last Tab</button>
+                <button onclick="getTabInfo()">Get Active Tab Info</button>
+            </div>
+
+            <div class="code-example">
+                <pre><code>// API Usage Examples
+const tabs = document.querySelector('ck-tabs');
+
+// Activate specific tab
+tabs.activateTab(1);
+
+// Get active tab info
+const activeTab = tabs.getActiveTab();
+const activeIndex = tabs.getActiveIndex();
+
+// Add new tab
+const newTab = tabs.addTab('New Tab', '&lt;p&gt;New content&lt;/p&gt;');
+
+// Remove tab
+tabs.removeTab(2);</code></pre>
+            </div>
+        </div>
+
+        <!-- Event Handling -->
+        <div class="demo-section">
+            <h2>📡 Event Handling</h2>
+            <p>Monitor tab events in real-time. Switch tabs below to see events in the console.</p>
+
+            <ck-tabs id="event-tabs">
+                <ck-tab label="Event Tab 1" active>
+                    <h1>Event Monitoring</h1>
+                    <p>Switch between tabs to see events logged in real-time below.</p>
+                    <p>Events include detailed information about the tab change, including previous and current states.</p>
+                </ck-tab>
+                <ck-tab label="Event Tab 2">
+                    <h1>Event Details</h1>
+                    <p>Each event contains comprehensive information:</p>
+                    <ul>
+                        <li><strong>activeIndex</strong> - Index of the newly active tab</li>
+                        <li><strong>activeTab</strong> - Reference to the active tab element</li>
+                        <li><strong>previousActiveIndex</strong> - Previous active tab index</li>
+                        <li><strong>timestamp</strong> - When the event occurred</li>
+                    </ul>
+                </ck-tab>
+                <ck-tab label="Event Tab 3">
+                    <h1>Event Types</h1>
+                    <p>CK-Tabs dispatches two main events:</p>
+                    <ul>
+                        <li><strong>tab-change</strong> - Fired when active tab changes</li>
+                        <li><strong>tab-selected</strong> - Fired when a tab is selected</li>
+                    </ul>
+                    <p>Both events bubble up the DOM tree for flexible event handling.</p>
+                </ck-tab>
+            </ck-tabs>
+
+            <div class="event-log" id="event-log">
+                Event console initialized. Switch tabs to see events...
+            </div>
+
+            <div class="code-example">
+                <pre><code>// Event Handling
+tabs.addEventListener('tab-change', (e) => {
+  console.log('Tab changed:', e.detail);
+  // {
+  //   activeIndex: 1,
+  //   activeTab: CKTab,
+  //   previousActiveIndex: 0,
+  //   previousActiveTab: CKTab
+  // }
+});
+
+tabs.addEventListener('tab-selected', (e) => {
+  console.log('Tab selected:', e.detail);
+  // {
+  //   selectedIndex: 1,
+  //   selectedTab: CKTab,
+  //   tabLabel: 'Tab Name',
+  //   timestamp: 1640995200000
+  // }
+});</code></pre>
+            </div>
+        </div>
+
+        <!-- Accessibility Demonstration -->
+        <div class="demo-section">
+            <h2>♿ Accessibility Features</h2>
+            <p>Test keyboard navigation and screen reader support. Try using Tab, Arrow keys, Home, and End.</p>
+            
+            <div style="background: #e8f4fd; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                <strong>Keyboard Instructions:</strong>
+                <ul>
+                    <li><kbd>Tab</kbd> - Move focus to the tabs</li>
+                    <li><kbd>Arrow Left/Right</kbd> - Navigate between tabs</li>
+                    <li><kbd>Home</kbd> - Go to first tab</li>
+                    <li><kbd>End</kbd> - Go to last tab</li>
+                    <li><kbd>Enter/Space</kbd> - Activate focused tab</li>
+                </ul>
+            </div>
+
+            <ck-tabs id="a11y-tabs">
+                <ck-tab label="WCAG Compliance" active>
+                    <h1>WCAG 2.1 AA Compliance</h1>
+                    <p>This component meets Web Content Accessibility Guidelines (WCAG) 2.1 AA standards:</p>
+                    <ul>
+                        <li>✅ Keyboard accessible - All functionality available via keyboard</li>
+                        <li>✅ Screen reader support - Proper ARIA attributes and semantic HTML</li>
+                        <li>✅ Focus management - Visible focus indicators and logical tab order</li>
+                        <li>✅ Color contrast - Meets minimum contrast ratios</li>
+                        <li>✅ Reduced motion - Respects user motion preferences</li>
+                    </ul>
+                </ck-tab>
+                <ck-tab label="ARIA Implementation">
+                    <h1>ARIA Attributes</h1>
+                    <p>The component uses proper ARIA attributes for screen reader support:</p>
+                    <ul>
+                        <li><code>role="tab"</code> on tab headers</li>
+                        <li><code>role="tabpanel"</code> on content panels</li>
+                        <li><code>aria-selected</code> indicates active tab</li>
+                        <li><code>aria-controls</code> links tabs to panels</li>
+                        <li><code>aria-labelledby</code> links panels to tabs</li>
+                        <li><code>aria-hidden</code> manages panel visibility</li>
+                    </ul>
+                </ck-tab>
+                <ck-tab label="Focus Management">
+                    <h1>Focus Management</h1>
+                    <p>Focus is managed intelligently for optimal user experience:</p>
+                    <ul>
+                        <li>Only active tab is in tab order (roving tabindex)</li>
+                        <li>Focus indicators are clearly visible</li>
+                        <li>Focus moves logically with arrow key navigation</li>
+                        <li>Focus is preserved when switching tabs</li>
+                    </ul>
+                </ck-tab>
+            </ck-tabs>
+        </div>
+
+        <!-- Performance Information -->
+        <div class="demo-section">
+            <h2>🚀 Performance Features</h2>
+            <p>CK-Tabs is optimized for performance with modern web technologies.</p>
+
+            <ck-tabs id="performance-tabs">
+                <ck-tab label="Constructable Stylesheets" active>
+                    <h1>Constructable Stylesheets</h1>
+                    <p>The component uses Constructable Stylesheets for optimal performance:</p>
+                    <ul>
+                        <li><strong>Memory Efficiency</strong> - Shared stylesheet objects reduce memory usage</li>
+                        <li><strong>Performance</strong> - Faster than creating multiple &lt;style&gt; elements</li>
+                        <li><strong>Browser Support</strong> - Automatic fallback for Safari and older browsers</li>
+                        <li><strong>Dynamic Updates</strong> - Easy programmatic style updates</li>
+                    </ul>
+                    <p>Browser support: Chrome 73+, Firefox 69+, Safari 16.4+, Edge 79+</p>
+                </ck-tab>
+                <ck-tab label="Bundle Size">
+                    <h1>Optimized Bundle Size</h1>
+                    <p>The component is designed for minimal impact on your application bundle:</p>
+                    <ul>
+                        <li><strong>Small Footprint</strong> - Less than 15KB gzipped</li>
+                        <li><strong>Tree Shaking</strong> - Only import what you need</li>
+                        <li><strong>No Dependencies</strong> - Pure Web Components implementation</li>
+                        <li><strong>Modern ESM</strong> - ES modules for optimal bundling</li>
+                    </ul>
+                </ck-tab>
+                <ck-tab label="Runtime Performance">
+                    <h1>Runtime Performance</h1>
+                    <p>Optimized for fast initialization and smooth interactions:</p>
+                    <ul>
+                        <li><strong>Fast Initialization</strong> - &lt;50ms for 20 tabs</li>
+                        <li><strong>Smooth Switching</strong> - &lt;10ms tab transitions</li>
+                        <li><strong>Memory Stable</strong> - No memory leaks</li>
+                        <li><strong>Minimal Reflows</strong> - Efficient DOM updates</li>
+                    </ul>
+                </ck-tab>
+            </ck-tabs>
+        </div>
+    </div>
+
+    <!-- Import the component -->
+    <script type="module" src="../dist/index.esm.js"></script>
+
+    <script>
+        // Theme switching functionality
+        const themeSelect = document.getElementById('theme-select');
+        const themedTabs = document.getElementById('themed-tabs');
+
+        themeSelect.addEventListener('change', (e) => {
+            // Remove all theme classes
+            document.body.classList.remove('theme-dark', 'theme-forest', 'theme-sunset');
+            
+            // Add selected theme class
+            if (e.target.value) {
+                document.body.classList.add(e.target.value);
+            }
+        });
+
+        // API demonstration functions
+        const apiTabs = document.getElementById('api-tabs');
+        let clickCount = 0;
+        let tabCounter = 4;
+
+        function activateTab(index) {
+            apiTabs.activateTab(index);
+        }
+
+        function addNewTab() {
+            const newTab = apiTabs.addTab(
+                `Dynamic Tab ${tabCounter}`, 
+                `<h1>Dynamic Tab ${tabCounter}</h1><p>This tab was added programmatically at ${new Date().toLocaleTimeString()}.</p>`
+            );
+            tabCounter++;
+        }
+
+        function removeLastTab() {
+            const tabs = apiTabs.querySelectorAll('ck-tab');
+            if (tabs.length > 1) {
+                apiTabs.removeTab(tabs.length - 1);
+            } else {
+                alert('Cannot remove the last tab!');
+            }
+        }
+
+        function getTabInfo() {
+            const activeTab = apiTabs.getActiveTab();
+            const activeIndex = apiTabs.getActiveIndex();
+            alert(`Active Tab: "${activeTab.label}" (Index: ${activeIndex})`);
+        }
+
+        function showAlert() {
+            clickCount++;
+            document.getElementById('click-count').textContent = clickCount;
+            alert(`Button clicked ${clickCount} times!`);
+        }
+
+        // Update time in Tab 1
+        function updateTime() {
+            const timeElement = document.getElementById('tab1-time');
+            if (timeElement) {
+                timeElement.textContent = new Date().toLocaleTimeString();
+            }
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Event logging
+        const eventLog = document.getElementById('event-log');
+        const eventTabs = document.getElementById('event-tabs');
+
+        function logEvent(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            eventLog.innerHTML += `\n[${timestamp}] ${message}`;
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+
+        eventTabs.addEventListener('tab-change', (e) => {
+            logEvent(`🔄 tab-change: Switched from tab ${e.detail.previousActiveIndex} to tab ${e.detail.activeIndex}`);
+        });
+
+        eventTabs.addEventListener('tab-selected', (e) => {
+            logEvent(`✅ tab-selected: "${e.detail.tabLabel}" (index: ${e.detail.selectedIndex})`);
+        });
+
+        // Log initial page load
+        window.addEventListener('load', () => {
+            logEvent('🚀 Page loaded - CK-Tabs demo ready');
+        });
+
+        // Accessibility announcement
+        function announceToScreenReader(message) {
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.style.position = 'absolute';
+            announcement.style.left = '-10000px';
+            announcement.style.width = '1px';
+            announcement.style.height = '1px';
+            announcement.style.overflow = 'hidden';
+            announcement.textContent = message;
+            
+            document.body.appendChild(announcement);
+            
+            setTimeout(() => {
+                document.body.removeChild(announcement);
+            }, 1000);
+        }
+
+        // Listen for all tab changes to provide screen reader announcements
+        document.addEventListener('tab-change', (e) => {
+            if (e.target.id === 'a11y-tabs') {
+                const tabName = e.detail.activeTab.label;
+                announceToScreenReader(`Switched to ${tabName} tab`);
+            }
+        });
+    </script>
+</body>
+</html>
