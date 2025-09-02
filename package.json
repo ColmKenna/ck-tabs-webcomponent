@@ -1,6 +1,6 @@
 {
   "name": "@colmkenna/ck-tabs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A web component library featuring ck-tabs.",
   "type": "module",
   "main": "dist/index.js",
