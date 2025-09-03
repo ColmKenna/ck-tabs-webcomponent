@@ -66,6 +66,14 @@ export class CKTabs extends HTMLElement {
    */
   private createStyles(): string {
     const cssText = `
+      .tab-headings {
+        display: flex;
+        flex-direction: row;
+        overflow-x: overlay;
+        width: 100%;
+        border-bottom: 1px solid var(--tab-border, #e0e0e0);
+        background: var(--tab-bg, #ffffff);
+      }
       :host {
         display: flex;
         flex-wrap: wrap;
@@ -259,36 +267,46 @@ export class CKTabs extends HTMLElement {
 
     const styleElement = this.createStyles();
 
+    const headingsHtml = tabs
+      .map(
+      (tab, index) => `
+      <button 
+        class="tab-heading ${index === activeIndex ? 'active' : ''}" 
+        data-index="${index}"
+        role="tab"
+        aria-selected="${index === activeIndex}"
+        aria-controls="panel-${index}"
+        id="tab-${index}"
+        type="button"
+      >
+        ${this.escapeHtml(tab.label)}
+      </button>
+      `
+      )
+      .join('');
+
+    const panelsHtml = tabs
+      .map(
+      (tab, index) => `
+      <div 
+        class="panel ${index === activeIndex ? 'active' : ''}"
+        role="tabpanel"
+        aria-labelledby="tab-${index}"
+        id="panel-${index}"
+        ${index !== activeIndex ? 'aria-hidden="true"' : ''}
+      >
+        <div class="panel-content">
+        <slot name="tab-${index}"></slot>
+        </div>
+      </div>
+      `
+      )
+      .join('');
+
     this.shadow.innerHTML = `
       ${styleElement}
-      ${tabs
-        .map(
-          (tab, index) => `
-        <button 
-          class="tab-heading ${index === activeIndex ? 'active' : ''}" 
-          data-index="${index}"
-          role="tab"
-          aria-selected="${index === activeIndex}"
-          aria-controls="panel-${index}"
-          id="tab-${index}"
-          type="button"
-        >
-          ${this.escapeHtml(tab.label)}
-        </button>
-        <div 
-          class="panel ${index === activeIndex ? 'active' : ''}"
-          role="tabpanel"
-          aria-labelledby="tab-${index}"
-          id="panel-${index}"
-          ${index !== activeIndex ? 'aria-hidden="true"' : ''}
-        >
-          <div class="panel-content">
-            <slot name="tab-${index}"></slot>
-          </div>
-        </div>
-      `
-        )
-        .join('')}
+      <div class="tab-headings">${headingsHtml}</div>
+      ${panelsHtml}
     `;
 
     // Assign slot names to tabs
