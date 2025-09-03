@@ -269,7 +269,7 @@ export class CKTabs extends HTMLElement {
 
     const headingsHtml = tabs
       .map(
-      (tab, index) => `
+        (tab, index) => `
       <button 
         class="tab-heading ${index === activeIndex ? 'active' : ''}" 
         data-index="${index}"
@@ -287,7 +287,7 @@ export class CKTabs extends HTMLElement {
 
     const panelsHtml = tabs
       .map(
-      (tab, index) => `
+        (tab, index) => `
       <div 
         class="panel ${index === activeIndex ? 'active' : ''}"
         role="tabpanel"
