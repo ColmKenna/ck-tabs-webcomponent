@@ -134,6 +134,7 @@ export class CKTabs extends HTMLElement {
         overflow-x: hidden;
         overflow-y: auto;
         color: var(--tab-content-text, #333333);
+        box-sizing: border-box;
       }
 
       .panel-content h1 {
