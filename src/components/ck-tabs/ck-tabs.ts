@@ -120,6 +120,7 @@ export class CKTabs extends HTMLElement {
         width: 100%;
         height: 450px;
         overflow: hidden;
+        box-sizing: border-box;
       }
 
       .panel.active {
